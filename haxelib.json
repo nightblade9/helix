@@ -1,0 +1,13 @@
+{
+    "name": "helix",
+    "version": "0.0.1",
+    "releasenote": "Initial release",
+
+    "url": "https://github.com/deengames-prototypes/helix",
+    "description": "Helix is a thin layer over HaxeFlixel to facilitate accelerated development.",
+    "tags": ["cross", "extension", "utility"],
+    "license": "MIT",    
+    "classPath": "src",
+    "contributors": ["nightblade9"],
+    "dependencies": { "flixel": "4.2.1" }
+}
