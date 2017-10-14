@@ -9,5 +9,5 @@
     "license": "MIT",    
     "classPath": "src",
     "contributors": ["nightblade9"],
-    "dependencies": { "flixel": "4.2.1" }
+    "dependencies": { "flixel": "4.3.0" }
 }
