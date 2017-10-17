@@ -1,3 +1,9 @@
+###
+# NB: the order of lines really really matters. Moving even a single
+# line out of order could cause mysterious compilation errors.
+# Make sure you test changes line-by-line.
+###
+
 # Generate for the Neko target.
 # Can add more targets here, generate to etc. bin/js.xml
 -neko helix.n
