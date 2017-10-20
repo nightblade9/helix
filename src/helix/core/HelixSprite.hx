@@ -5,10 +5,10 @@ import flixel.FlxCamera.FlxCameraFollowStyle;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.effects.FlxFlicker;
-import flixel.input.FlxInput.FlxInputState;
 import flixel.input.keyboard.FlxKey;
 import flixel.input.mouse.FlxMouseEventManager;
 import flixel.math.FlxPoint;
+import flixel.util.FlxColor;
 
 class HelixSprite extends FlxSprite
 {
@@ -21,10 +21,27 @@ class HelixSprite extends FlxSprite
     // Both for collide-and-move and regular ol' collisions
     private var collisionCallbacks = new Map<FlxBasic, Dynamic->Dynamic->Void>();
 
-    public function new(filename:String):Void
+    /**
+     *  Creates a new sprite with the given image. If you just want to use a coloured
+     *  rectangle, pass in null for the filename and fill out the other parameters.
+     */
+    public function new(?filename:String, ?colourDetails:ColourDetails):Void
     {
         super();
-        this.loadGraphic(filename);
+
+        if (filename != null && colourDetails == null)
+        {
+            this.loadGraphic(filename);
+        }
+        else if (colourDetails != null && filename == null)
+        {
+            this.makeGraphic(colourDetails.width, colourDetails.height, colourDetails.colour, true);
+        }
+        else
+        {
+            throw "Please specify an image file OR colour details (but not both).";
+        }
+
         HelixState.current.add(this);
     }
 
@@ -173,4 +190,10 @@ class HelixSprite extends FlxSprite
     }
 
     /// End: fluent API
+}
+
+typedef ColourDetails ={
+    width: Int,
+    height: Int,
+    colour: FlxColor
 }
