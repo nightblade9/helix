@@ -8,11 +8,15 @@ import flixel.effects.FlxFlicker;
 import flixel.input.keyboard.FlxKey;
 import flixel.input.mouse.FlxMouseEventManager;
 import flixel.math.FlxPoint;
+import flixel.text.FlxText;
 import flixel.util.FlxColor;
 
 class HelixSprite extends FlxSprite
-{
+{    
     public var keyboardMoveSpeed(default, null):Float = 0;
+
+    private static inline var DEFAULT_FONT_SIZE:Int = 16;
+
     private var componentVelocities = new Map<String, FlxPoint>();
     // collide
     private var collisionTargets = new Array<FlxBasic>();
@@ -20,6 +24,8 @@ class HelixSprite extends FlxSprite
     private var collideAndResolveTargets = new Array<FlxBasic>();
     // Both for collide-and-move and regular ol' collisions
     private var collisionCallbacks = new Map<FlxBasic, Dynamic->Dynamic->Void>();
+    
+    private var textField:FlxText;
 
     /**
      *  Creates a new sprite with the given image. If you just want to use a coloured
@@ -107,6 +113,17 @@ class HelixSprite extends FlxSprite
         return this.componentVelocities.exists(name);
     }
 
+    override public function destroy():Void
+    {
+        if (this.textField != null)
+        {
+            this.textField.destroy();
+        }
+
+        super.destroy();
+    }
+
+    /////// TODO: refactor into fluent API extension
     /// Start: fluent API
     // Collide with an object (detect overlap). Doesn't resolve the collision.
     // If you want resolution/displacement, use collideResolve() instead.
@@ -186,6 +203,25 @@ class HelixSprite extends FlxSprite
     public function trackWithCamera():HelixSprite
     {
         FlxG.camera.follow(this, FlxCameraFollowStyle.LOCKON, 1);
+        return this;
+    }
+
+    // TODO: accept a format
+    public function text(message:String, ?colour:FlxColor):HelixSprite
+    {
+        if (colour == null)
+        {
+            colour = FlxColor.WHITE;
+        }
+
+        if (this.textField != null)
+        {
+            this.textField.destroy();
+        }
+
+        this.textField = new FlxText(this.x, this.y, FlxG.width, message);
+        this.textField.setFormat(null, DEFAULT_FONT_SIZE, colour);
+        HelixState.current.add(this.textField);
         return this;
     }
 
