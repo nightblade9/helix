@@ -40593,6 +40593,10 @@
 	<typedef path="helix.TotalGameTime" params="" file="src/helix/GameTime.hx" module="helix.GameTime"><x path="Float"/></typedef>
 	<class path="helix.core.HelixSprite" params="" file="src/helix/core/HelixSprite.hx">
 		<extends path="flixel.FlxSprite"/>
+		<DEFAULT_FONT_SIZE get="inline" set="null" expr="16" line="18" static="1">
+			<x path="Int"/>
+			<meta><m n=":value"><e>16</e></m></meta>
+		</DEFAULT_FONT_SIZE>
 		<keyboardMoveSpeed public="1" set="null" expr="0">
 			<x path="Float"/>
 			<meta><m n=":value"><e>0</e></m></meta>
@@ -40623,15 +40627,17 @@
 			</x>
 			<meta><m n=":value"><e><![CDATA[new Map<FlxBasic,Dynamic -> Dynamic>()]]></e></m></meta>
 		</collisionCallbacks>
-		<update public="1" set="method" line="48" override="1"><f a="elapsedSeconds">
+		<textField><c path="flixel.text.FlxText"/></textField>
+		<update public="1" set="method" line="54" override="1"><f a="elapsedSeconds">
 	<x path="Float"/>
 	<x path="Void"/>
 </f></update>
-		<hasComponentVelocity public="1" set="method" line="105"><f a="name">
+		<hasComponentVelocity public="1" set="method" line="111"><f a="name">
 	<c path="String"/>
 	<x path="Bool"/>
 </f></hasComponentVelocity>
-		<collide public="1" set="method" line="113"><f a="objectOrGroup:callback">
+		<destroy public="1" set="method" line="116" override="1"><f a=""><x path="Void"/></f></destroy>
+		<collide public="1" set="method" line="130"><f a="objectOrGroup:callback">
 	<c path="flixel.FlxBasic"/>
 	<f a=":">
 		<d/>
@@ -40640,7 +40646,7 @@
 	</f>
 	<x path="Void"/>
 </f></collide>
-		<collideResolve public="1" set="method" line="122">
+		<collideResolve public="1" set="method" line="139">
 			<f a="objectOrGroup:?callback" v=":null">
 				<c path="flixel.FlxBasic"/>
 				<f a=":">
@@ -40652,32 +40658,37 @@
 			</f>
 			<meta><m n=":value"><e>{ callback : null }</e></m></meta>
 		</collideResolve>
-		<collisionImmovable public="1" set="method" line="129"><f a=""><c path="helix.core.HelixSprite"/></f></collisionImmovable>
-		<flicker public="1" set="method" line="135"><f a="durationSeconds">
+		<collisionImmovable public="1" set="method" line="146"><f a=""><c path="helix.core.HelixSprite"/></f></collisionImmovable>
+		<flicker public="1" set="method" line="152"><f a="durationSeconds">
 	<x path="Float"/>
 	<c path="helix.core.HelixSprite"/>
 </f></flicker>
-		<onClick public="1" set="method" line="141"><f a="callback">
+		<onClick public="1" set="method" line="158"><f a="callback">
 	<f a=""><x path="Void"/></f>
 	<c path="helix.core.HelixSprite"/>
 </f></onClick>
-		<move public="1" set="method" line="150"><f a="x:y">
+		<move public="1" set="method" line="167"><f a="x:y">
 	<x path="Float"/>
 	<x path="Float"/>
 	<c path="helix.core.HelixSprite"/>
 </f></move>
-		<moveWithKeyboard public="1" set="method" line="157"><f a="keyboardMoveSpeed">
+		<moveWithKeyboard public="1" set="method" line="174"><f a="keyboardMoveSpeed">
 	<x path="Float"/>
 	<c path="helix.core.HelixSprite"/>
 </f></moveWithKeyboard>
-		<setComponentVelocity set="method" line="163"><f a="name:vx:vy">
+		<setComponentVelocity set="method" line="180"><f a="name:vx:vy">
 	<c path="String"/>
 	<x path="Float"/>
 	<x path="Float"/>
 	<c path="helix.core.HelixSprite"/>
 </f></setComponentVelocity>
-		<trackWithCamera public="1" set="method" line="186"><f a=""><c path="helix.core.HelixSprite"/></f></trackWithCamera>
-		<new public="1" set="method" line="28">
+		<trackWithCamera public="1" set="method" line="203"><f a=""><c path="helix.core.HelixSprite"/></f></trackWithCamera>
+		<text public="1" set="method" line="210"><f a="message:?colour">
+	<c path="String"/>
+	<x path="flixel.util.FlxColor"/>
+	<c path="helix.core.HelixSprite"/>
+</f></text>
+		<new public="1" set="method" line="34">
 			<f a="?filename:?colourDetails">
 				<c path="String"/>
 				<t path="helix.core.ColourDetails"/>

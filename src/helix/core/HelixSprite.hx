@@ -226,6 +226,27 @@ class HelixSprite extends FlxSprite
     }
 
     /// End: fluent API
+
+    // Text makes things complicated
+    override public function set_x(x:Float):Float
+    {
+        super.x = x;
+        if (this.textField != null)
+        {
+            this.textField.x = x;
+        }
+        return x;
+    }
+
+    override public function set_y(y:Float):Float
+    {
+        super.y = y;
+        if (this.textField != null)
+        {
+            this.textField.y = y;
+        }
+        return y;
+    }
 }
 
 typedef ColourDetails ={
