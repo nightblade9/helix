@@ -1,31 +1,30 @@
 package helix.core;
 
 import flixel.FlxBasic;
-import flixel.FlxCamera.FlxCameraFollowStyle;
 import flixel.FlxG;
 import flixel.FlxSprite;
-import flixel.effects.FlxFlicker;
 import flixel.input.keyboard.FlxKey;
-import flixel.input.mouse.FlxMouseEventManager;
 import flixel.math.FlxPoint;
 import flixel.text.FlxText;
 import flixel.util.FlxColor;
 
 class HelixSprite extends FlxSprite
 {    
-    public var keyboardMoveSpeed(default, null):Float = 0;
-
-    private static inline var DEFAULT_FONT_SIZE:Int = 16;
-
-    private var componentVelocities = new Map<String, FlxPoint>();
-    // collide
-    private var collisionTargets = new Array<FlxBasic>();
-    // collideResolve
-    private var collideAndResolveTargets = new Array<FlxBasic>();
-    // Both for collide-and-move and regular ol' collisions
-    private var collisionCallbacks = new Map<FlxBasic, Dynamic->Dynamic->Void>();
+    // Setter is public for the fluent API
+    public var keyboardMoveSpeed(default, default):Float = 0;
     
-    private var textField:FlxText;
+    /////
+    // Internal fields that are used for the fluent API support.
+    public var componentVelocities = new Map<String, FlxPoint>();
+    // collide
+    public var collisionTargets = new Array<FlxBasic>();
+    // collideResolve
+    public var collideAndResolveTargets = new Array<FlxBasic>();
+    // Both for collide-and-move and regular ol' collisions
+    public var collisionCallbacks = new Map<FlxBasic, Dynamic->Dynamic->Void>();
+    public var textField:FlxText;
+    // End internal fields
+    /////
 
     /**
      *  Creates a new sprite with the given image. If you just want to use a coloured
@@ -123,58 +122,25 @@ class HelixSprite extends FlxSprite
         super.destroy();
     }
 
-    /////// TODO: refactor into fluent API extension
-    /// Start: fluent API
-    // Collide with an object (detect overlap). Doesn't resolve the collision.
-    // If you want resolution/displacement, use collideResolve() instead.
-    public function collide(objectOrGroup:FlxBasic, callback:Dynamic->Dynamic->Void)
+    // Text makes things complicated
+    override public function set_x(x:Float):Float
     {
-        this.collisionTargets.push(objectOrGroup);
-        this.collisionCallbacks.set(objectOrGroup, callback);
-    }
-
-    // Collide with an object, and push it out of the way! If you don't want to resolve the
-    // collision, use collide() instead. (Remember to call collisionImmovable() on your sprites if
-    // you don't want them to move when collided.)
-    public function collideResolve(objectOrGroup:FlxBasic, ?callback:Dynamic->Dynamic->Void = null)
-    {
-        this.collideAndResolveTargets.push(objectOrGroup);
-        this.collisionCallbacks.set(objectOrGroup, callback);
-    }
-
-    // Sets to immovable for collisions
-    public function collisionImmovable():HelixSprite
-    {
-        this.immovable = true;
-        return this;
-    }
-
-    public function flicker(durationSeconds:Float):HelixSprite
-    {
-        FlxFlicker.flicker(this, durationSeconds);
-        return this;
-    }
-
-    public function onClick(callback:Void->Void):HelixSprite
-    {
-        FlxMouseEventManager.add(this, function(me:HelixSprite):Void
+        super.x = x;
+        if (this.textField != null)
         {
-            callback();
-        });
-        return this;
+            this.textField.x = x;
+        }
+        return x;
     }
 
-    public function move(x:Float, y:Float):HelixSprite
+    override public function set_y(y:Float):Float
     {
-        this.x = x;
-        this.y = y;
-        return this;
-    }
-
-    public function moveWithKeyboard(keyboardMoveSpeed:Float):HelixSprite
-    {
-        this.keyboardMoveSpeed = keyboardMoveSpeed;
-        return this;
+        super.y = y;
+        if (this.textField != null)
+        {
+            this.textField.y = y;
+        }
+        return y;
     }
 
     private function setComponentVelocity(name:String, vx:Float, vy:Float):HelixSprite
@@ -198,54 +164,6 @@ class HelixSprite extends FlxSprite
         this.velocity.copyFrom(total);
 
         return this;
-    }
-
-    public function trackWithCamera():HelixSprite
-    {
-        FlxG.camera.follow(this, FlxCameraFollowStyle.LOCKON, 1);
-        return this;
-    }
-
-    // TODO: accept a format
-    public function text(message:String, ?colour:FlxColor):HelixSprite
-    {
-        if (colour == null)
-        {
-            colour = FlxColor.WHITE;
-        }
-
-        if (this.textField != null)
-        {
-            this.textField.destroy();
-        }
-
-        this.textField = new FlxText(this.x, this.y, FlxG.width, message);
-        this.textField.setFormat(null, DEFAULT_FONT_SIZE, colour);
-        HelixState.current.add(this.textField);
-        return this;
-    }
-
-    /// End: fluent API
-
-    // Text makes things complicated
-    override public function set_x(x:Float):Float
-    {
-        super.x = x;
-        if (this.textField != null)
-        {
-            this.textField.x = x;
-        }
-        return x;
-    }
-
-    override public function set_y(y:Float):Float
-    {
-        super.y = y;
-        if (this.textField != null)
-        {
-            this.textField.y = y;
-        }
-        return y;
     }
 }
 
