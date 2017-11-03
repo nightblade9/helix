@@ -143,6 +143,12 @@ class HelixSprite extends FlxSprite
         return y;
     }
 
+    public function move(x:Float, y:Float)
+    {
+        this.set_x(x);
+        this.set_y(y);
+    }
+
     private function setComponentVelocity(name:String, vx:Float, vy:Float):HelixSprite
     {
         if (vx == 0 && vy == 0)
