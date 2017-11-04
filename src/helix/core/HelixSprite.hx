@@ -7,6 +7,7 @@ import flixel.input.keyboard.FlxKey;
 import flixel.math.FlxPoint;
 import flixel.text.FlxText;
 import flixel.util.FlxColor;
+import flixel.input.keyboard.FlxKey;
 
 class HelixSprite extends FlxSprite
 {    
@@ -24,6 +25,8 @@ class HelixSprite extends FlxSprite
     public var collisionCallbacks = new Map<FlxBasic, Dynamic->Dynamic->Void>();
     public var textField:FlxText;
     // End internal fields
+    private var keypressMap = new Map<Array<FlxKey>, Void->Void>();
+    private var movementMap = new Map<Array<FlxKey>, Void->Void>();
     /////
 
     /**
@@ -54,6 +57,9 @@ class HelixSprite extends FlxSprite
     {
         super.update(elapsedSeconds);
         var state = HelixState.current;
+
+        this.processKeybinds();
+        this.processMovements();
 
          // Move to keyboard if specified
         if (keyboardMoveSpeed > 0)
@@ -141,6 +147,58 @@ class HelixSprite extends FlxSprite
             this.textField.y = y;
         }
         return y;
+    }
+
+    public function addKeyBind(keys:Array<String>, callback):Void
+    {
+        this.addToMap(keys, callback, this.keypressMap);
+    }
+
+    public function addMovement(keys:Array<String>, callback):Void
+    {
+        this.addToMap(keys, callback, this.movementMap);
+    }
+
+    private function addToMap(keys:Array<String>, callback, map):Void
+    {
+        var flxKeyArray = this.getFlxKeyArray(keys);
+        if (flxKeyArray.length > 0) {
+            this.movementMap[flxKeyArray] = callback;
+        }        
+    }
+
+    private function getFlxKeyArray(keys:Array<String>):Array<FlxKey>
+    {
+        var flxKeyArray = new Array<FlxKey>();
+        
+        for (key in keys) {
+            var flxKey:Null<FlxKey> = FlxKey.fromString(key);
+
+            if (flxKey != null) {
+                flxKeyArray.push(flxKey);
+            }
+        }
+        return flxKeyArray;
+    }
+
+    private function processKeybinds():Void
+    {
+        this.processMap(this.keypressMap);
+    }
+
+    private function processMovements():Void
+    {
+        this.acceleration.set();
+        this.processMap(this.movementMap);
+    }
+
+    private function processMap(map:Map<Array<FlxKey>, Void->Void>):Void
+    {
+        for (flxKeyArray in map.keys()) {
+            if (FlxG.keys.anyPressed(flxKeyArray)) {
+                map[flxKeyArray]();
+            }
+        }
     }
 
     private function setComponentVelocity(name:String, vx:Float, vy:Float):HelixSprite
