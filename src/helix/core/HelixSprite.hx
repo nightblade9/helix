@@ -25,8 +25,7 @@ class HelixSprite extends FlxSprite
     public var collisionCallbacks = new Map<FlxBasic, Dynamic->Dynamic->Void>();
     public var textField:FlxText;
     // End internal fields
-    private var keypressMap = new Map<Array<FlxKey>, Void->Void>();
-    private var movementMap = new Map<Array<FlxKey>, Void->Void>();
+    public var keybindMap = new Map<Array<FlxKey>, Void->Void>();
     /////
 
     /**
@@ -58,8 +57,8 @@ class HelixSprite extends FlxSprite
         super.update(elapsedSeconds);
         var state = HelixState.current;
 
+        this.resetAcceleration();
         this.processKeybinds();
-        this.processMovements();
 
          // Move to keyboard if specified
         if (keyboardMoveSpeed > 0)
@@ -148,29 +147,17 @@ class HelixSprite extends FlxSprite
         }
         return y;
     }
-
-    public function addKeyBind(keys:Array<String>, callback):Void
+    
+    private function resetAcceleration():Void
     {
-        this.addToMap(keys, callback, this.keypressMap);
+        this.acceleration.set();
+        this.angularVelocity = 0;
     }
 
-    public function addMovement(keys:Array<String>, callback):Void
-    {
-        this.addToMap(keys, callback, this.movementMap);
-    }
-
-    private function addToMap(keys:Array<String>, callback, map):Void
-    {
-        var flxKeyArray = this.getFlxKeyArray(keys);
-        if (flxKeyArray.length > 0) {
-            this.movementMap[flxKeyArray] = callback;
-        }        
-    }
-
-    private function getFlxKeyArray(keys:Array<String>):Array<FlxKey>
+    public function getFlxKeyArray(keys:Array<String>):Array<FlxKey>
     {
         var flxKeyArray = new Array<FlxKey>();
-        
+
         for (key in keys) {
             var flxKey:Null<FlxKey> = FlxKey.fromString(key);
 
@@ -183,20 +170,9 @@ class HelixSprite extends FlxSprite
 
     private function processKeybinds():Void
     {
-        this.processMap(this.keypressMap);
-    }
-
-    private function processMovements():Void
-    {
-        this.acceleration.set();
-        this.processMap(this.movementMap);
-    }
-
-    private function processMap(map:Map<Array<FlxKey>, Void->Void>):Void
-    {
-        for (flxKeyArray in map.keys()) {
+        for (flxKeyArray in this.keybindMap.keys()) {
             if (FlxG.keys.anyPressed(flxKeyArray)) {
-                map[flxKeyArray]();
+                this.keybindMap[flxKeyArray]();
             }
         }
     }

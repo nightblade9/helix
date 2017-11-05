@@ -88,4 +88,13 @@ class HelixSpriteFluentApi
         HelixState.current.add(sprite.textField);
         return sprite;
     }
+
+    public static function addKeyBind(sprite:HelixSprite, keys:Array<String>, callback):HelixSprite
+    {
+        var flxKeyArray = sprite.getFlxKeyArray(keys);
+        if (flxKeyArray.length > 0) {
+            sprite.keybindMap[flxKeyArray] = callback;
+        }
+        return sprite;
+    }
 }
