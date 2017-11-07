@@ -3,10 +3,10 @@ package helix.core;
 import flixel.FlxBasic;
 import flixel.FlxG;
 import flixel.FlxSprite;
-import flixel.input.keyboard.FlxKey;
 import flixel.math.FlxPoint;
 import flixel.text.FlxText;
 import flixel.util.FlxColor;
+import flixel.input.keyboard.FlxKey;
 
 class HelixSprite extends FlxSprite
 {    
@@ -24,6 +24,7 @@ class HelixSprite extends FlxSprite
     public var collisionCallbacks = new Map<FlxBasic, Dynamic->Dynamic->Void>();
     public var textField:FlxText;
     // End internal fields
+    public var keypressCallbacks = new Array<Array<FlxKey>->Void>();
     /////
 
     /**
@@ -54,6 +55,8 @@ class HelixSprite extends FlxSprite
     {
         super.update(elapsedSeconds);
         var state = HelixState.current;
+
+        this.processKeybinds();
 
          // Move to keyboard if specified
         if (keyboardMoveSpeed > 0)
@@ -141,6 +144,21 @@ class HelixSprite extends FlxSprite
             this.textField.y = y;
         }
         return y;
+    }
+
+    private function processKeybinds():Void
+    {
+        var pressedKeys = [
+            for (flxinput in FlxG.keys.getIsDown())
+                flxinput.ID
+        ];
+        if (pressedKeys.length > 0) 
+        {
+            for (callback in this.keypressCallbacks) 
+            {
+                callback(pressedKeys);
+            }
+        }
     }
 
     private function setComponentVelocity(name:String, vx:Float, vy:Float):HelixSprite

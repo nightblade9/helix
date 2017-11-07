@@ -7,6 +7,7 @@ import flixel.effects.FlxFlicker;
 import flixel.input.mouse.FlxMouseEventManager;
 import flixel.text.FlxText;
 import flixel.util.FlxColor;
+import flixel.input.keyboard.FlxKey;
 
 class HelixSpriteFluentApi
 {
@@ -86,6 +87,12 @@ class HelixSpriteFluentApi
         sprite.textField = new FlxText(sprite.x, sprite.y, FlxG.width, message);
         sprite.textField.setFormat(null, DEFAULT_FONT_SIZE, colour);
         HelixState.current.add(sprite.textField);
+        return sprite;
+    }
+
+    public static function onKeyDown(sprite:HelixSprite, callback:Array<FlxKey>->Void):HelixSprite
+    {
+        sprite.keypressCallbacks.push(callback);
         return sprite;
     }
 }
