@@ -92,7 +92,7 @@ class HelixSpriteFluentApi
 
     public static function onKeyDown(sprite:HelixSprite, callback:Array<FlxKey>->Void):HelixSprite
     {
-        sprite.keypressCallbacks.push(callback);
+        sprite.keypressCallback = callback;
         return sprite;
     }
 }

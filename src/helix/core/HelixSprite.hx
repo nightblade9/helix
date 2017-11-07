@@ -15,6 +15,8 @@ class HelixSprite extends FlxSprite
     
     /////
     // Internal fields that are used for the fluent API support.
+    // TODO: create simple setters for these so they can be better encapsulated.
+    // For the ones that require getters, leave them as-is.
     public var componentVelocities = new Map<String, FlxPoint>();
     // collide
     public var collisionTargets = new Array<FlxBasic>();
@@ -23,8 +25,8 @@ class HelixSprite extends FlxSprite
     // Both for collide-and-move and regular ol' collisions
     public var collisionCallbacks = new Map<FlxBasic, Dynamic->Dynamic->Void>();
     public var textField:FlxText;
-    // End internal fields
-    public var keypressCallbacks = new Array<Array<FlxKey>->Void>();
+    public var keypressCallback(default, default):Array<FlxKey>->Void;
+    // End internal fields    
     /////
 
     /**
@@ -148,15 +150,16 @@ class HelixSprite extends FlxSprite
 
     private function processKeybinds():Void
     {
-        var pressedKeys = [
-            for (flxinput in FlxG.keys.getIsDown())
-                flxinput.ID
-        ];
-        if (pressedKeys.length > 0) 
+        if (this.keypressCallback != null)
         {
-            for (callback in this.keypressCallbacks) 
+            var pressedKeys = [
+                for (flxinput in FlxG.keys.getIsDown())
+                    flxinput.ID
+            ];
+
+            if (pressedKeys.length > 0)
             {
-                callback(pressedKeys);
+                this.keypressCallback(pressedKeys);
             }
         }
     }
