@@ -3,7 +3,6 @@ package helix.core;
 import flixel.FlxBasic;
 import flixel.FlxG;
 import flixel.FlxSprite;
-import flixel.input.keyboard.FlxKey;
 import flixel.math.FlxPoint;
 import flixel.text.FlxText;
 import flixel.util.FlxColor;
@@ -25,7 +24,7 @@ class HelixSprite extends FlxSprite
     public var collisionCallbacks = new Map<FlxBasic, Dynamic->Dynamic->Void>();
     public var textField:FlxText;
     // End internal fields
-    public var keybindMap = new Map<Array<FlxKey>, Void->Void>();
+    public var keypressCallbacks = new Array<Array<FlxKey>->Void>();
     /////
 
     /**
@@ -57,7 +56,6 @@ class HelixSprite extends FlxSprite
         super.update(elapsedSeconds);
         var state = HelixState.current;
 
-        this.resetAcceleration();
         this.processKeybinds();
 
          // Move to keyboard if specified
@@ -147,32 +145,18 @@ class HelixSprite extends FlxSprite
         }
         return y;
     }
-    
-    private function resetAcceleration():Void
-    {
-        this.acceleration.set();
-        this.angularVelocity = 0;
-    }
-
-    public function getFlxKeyArray(keys:Array<String>):Array<FlxKey>
-    {
-        var flxKeyArray = new Array<FlxKey>();
-
-        for (key in keys) {
-            var flxKey:Null<FlxKey> = FlxKey.fromString(key);
-
-            if (flxKey != null) {
-                flxKeyArray.push(flxKey);
-            }
-        }
-        return flxKeyArray;
-    }
 
     private function processKeybinds():Void
     {
-        for (flxKeyArray in this.keybindMap.keys()) {
-            if (FlxG.keys.anyPressed(flxKeyArray)) {
-                this.keybindMap[flxKeyArray]();
+        var pressedKeys = [
+            for (flxinput in FlxG.keys.getIsDown())
+                flxinput.ID
+        ];
+        if (pressedKeys.length > 0) 
+        {
+            for (callback in this.keypressCallbacks) 
+            {
+                callback(pressedKeys);
             }
         }
     }

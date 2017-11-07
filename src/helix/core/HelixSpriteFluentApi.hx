@@ -7,6 +7,7 @@ import flixel.effects.FlxFlicker;
 import flixel.input.mouse.FlxMouseEventManager;
 import flixel.text.FlxText;
 import flixel.util.FlxColor;
+import flixel.input.keyboard.FlxKey;
 
 class HelixSpriteFluentApi
 {
@@ -89,12 +90,9 @@ class HelixSpriteFluentApi
         return sprite;
     }
 
-    public static function addKeyBind(sprite:HelixSprite, keys:Array<String>, callback):HelixSprite
+    public static function onKeyDown(sprite:HelixSprite, callback:Array<FlxKey>->Void):HelixSprite
     {
-        var flxKeyArray = sprite.getFlxKeyArray(keys);
-        if (flxKeyArray.length > 0) {
-            sprite.keybindMap[flxKeyArray] = callback;
-        }
+        sprite.keypressCallbacks.push(callback);
         return sprite;
     }
 }
