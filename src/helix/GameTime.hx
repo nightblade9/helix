@@ -7,13 +7,21 @@ sub-second total game-time.
 */
 class GameTime
 {
-    // static class    
-    public static var totalGameTimeSeconds(default, null):Float = 0;
+    private static var totalElapsedSeconds(default, null):Float = 0;
+    public var elapsedSeconds(default, null):Float = 0;
+
+    public static function now():GameTime
+    {
+        return new GameTime(totalElapsedSeconds);
+    }
 
     public static function update(elapsedSeconds:Float):Void
     {
-        GameTime.totalGameTimeSeconds += elapsedSeconds;
+        GameTime.totalElapsedSeconds += elapsedSeconds;
+    }
+
+    public function new(elapsedSeconds:Float = 0)
+    {
+        this.elapsedSeconds = elapsedSeconds;
     }
 }
-
-typedef TotalGameTime = Float;
