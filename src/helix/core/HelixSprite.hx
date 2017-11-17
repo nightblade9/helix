@@ -157,10 +157,7 @@ class HelixSprite extends FlxSprite
                     flxinput.ID
             ];
 
-            if (pressedKeys.length > 0)
-            {
-                this.keypressCallback(pressedKeys);
-            }
+            this.keypressCallback(pressedKeys);
         }
     }
 
