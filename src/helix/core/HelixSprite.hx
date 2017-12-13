@@ -29,6 +29,8 @@ class HelixSprite extends FlxSprite
     // End internal fields    
     /////
 
+    private var filename:String;
+
     /**
      *  Creates a new sprite with the given image. If you just want to use a coloured
      *  rectangle, pass in null for the filename and fill out the other parameters.
@@ -50,6 +52,7 @@ class HelixSprite extends FlxSprite
             throw "Please specify an image file OR colour details (but not both).";
         }
 
+        this.filename = filename;
         HelixState.current.add(this);
     }
 
@@ -125,6 +128,11 @@ class HelixSprite extends FlxSprite
         }
 
         super.destroy();
+    }
+
+    override public function clone():HelixSprite
+    {
+        return new HelixSprite(this.filename);
     }
 
     // Text makes things complicated
