@@ -6,7 +6,7 @@ import flixel.text.FlxText;
 class HelixText extends FlxText
 {
     private static inline var DEFAULT_FIELD_WIDTH:Int = 0;
-    public static var defaultFont:String = ""; // system font
+    public static var defaultFont:String = "Arial"; // safe cross-OS font
     
     public var fontSize(get, null):Int;
 
