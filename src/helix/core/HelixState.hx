@@ -39,12 +39,20 @@ class HelixState extends FlxState
 
     public function isKeyPressed(keyCode:Int):Bool
     {
+        #if FLX_NO_KEYBOARD
+        return false;
+        #else
         return FlxG.keys.checkStatus(keyCode, FlxInputState.PRESSED);
+        #end
     }
 
     public function wasJustPressed(keyCode:Int):Bool
     {
+        #if FLX_NO_KEYBOARD
+        return false;
+        #else        
         return FlxG.keys.checkStatus(keyCode, FlxInputState.JUST_PRESSED);
+        #end
     }
     
     private function get_width():Int

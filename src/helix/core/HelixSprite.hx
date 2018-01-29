@@ -158,6 +158,7 @@ class HelixSprite extends FlxSprite
 
     private function processKeybinds():Void
     {
+        #if !FLX_NO_KEYBOARD
         if (this.keypressCallback != null)
         {
             var pressedKeys = [
@@ -167,6 +168,7 @@ class HelixSprite extends FlxSprite
 
             this.keypressCallback(pressedKeys);
         }
+        #end
     }
 
     private function setComponentVelocity(name:String, vx:Float, vy:Float):HelixSprite
