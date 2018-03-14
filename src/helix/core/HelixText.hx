@@ -5,14 +5,14 @@ import flixel.text.FlxText;
 
 class HelixText extends FlxText
 {
-    private static inline var DEFAULT_FIELD_WIDTH:Int = 0;
     public static var defaultFont:String = "Arial"; // safe cross-OS font
     
     public var fontSize(get, null):Int;
 
-    public function new(x:Int, y:Int, content:String, fontSize:Int)
+    // 0 maxWidth = autosize
+    public function new(x:Int, y:Int, content:String, fontSize:Int, maxWidth:Int = 0)
     {
-        super(x, y, DEFAULT_FIELD_WIDTH, content, fontSize, false);
+        super(x, y, maxWidth, content, fontSize, false);
         HelixState.current.add(this);
         this.font = HelixText.defaultFont;
     }

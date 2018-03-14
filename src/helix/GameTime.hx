@@ -7,7 +7,7 @@ sub-second total game-time.
 */
 class GameTime
 {
-    private static var totalElapsedSeconds(default, null):Float = 0;
+    public static var totalElapsedSeconds(default, null):Float = 0;
     public var elapsedSeconds(default, null):Float = 0;
 
     public static function now():GameTime
