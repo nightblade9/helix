@@ -2,6 +2,7 @@ package helix.core;
 
 import flixel.input.mouse.FlxMouseEventManager;
 import flixel.text.FlxText;
+import flixel.util.FlxColor;
 
 class HelixText extends FlxText
 {
@@ -10,11 +11,12 @@ class HelixText extends FlxText
     public var fontSize(get, null):Int;
 
     // 0 maxWidth = autosize
-    public function new(x:Int, y:Int, content:String, fontSize:Int, maxWidth:Int = 0)
+    public function new(x:Int, y:Int, content:String, fontSize:Int, color:FlxColor = FlxColor.WHITE, maxWidth:Int = 0)
     {
         super(x, y, maxWidth, content, fontSize, false);
-        HelixState.current.add(this);
-        this.font = HelixText.defaultFont;
+        this.setFormat(HelixText.defaultFont, fontSize, color);
+        HelixState.current.add(this);        
+        
     }
 
     /**
