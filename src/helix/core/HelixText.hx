@@ -14,9 +14,11 @@ class HelixText extends FlxText
     public function new(x:Int, y:Int, content:String, fontSize:Int, color:FlxColor = FlxColor.WHITE, maxWidth:Int = 0)
     {
         super(x, y, maxWidth, content, fontSize, false);
+        if (maxWidth != 0) {
+            this.wordWrap = true;            
+        }        
         this.setFormat(HelixText.defaultFont, fontSize, color);
         HelixState.current.add(this);        
-        
     }
 
     /**
