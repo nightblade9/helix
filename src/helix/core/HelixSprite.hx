@@ -3,10 +3,11 @@ package helix.core;
 import flixel.FlxBasic;
 import flixel.FlxG;
 import flixel.FlxSprite;
+import flixel.input.keyboard.FlxKey;
+import flixel.input.mouse.FlxMouseEventManager;
 import flixel.math.FlxPoint;
 import flixel.text.FlxText;
 import flixel.util.FlxColor;
-import flixel.input.keyboard.FlxKey;
 
 class HelixSprite extends FlxSprite
 {    
@@ -154,6 +155,18 @@ class HelixSprite extends FlxSprite
             this.textField.y = y;
         }
         return y;
+    }
+
+     /**
+    A callback to invoke when the user clicks on this sprite.
+    **/
+    public function onClick(callback:Void->Void):HelixSprite
+    {
+        FlxMouseEventManager.add(this, function(me:HelixSprite):Void
+        {
+            callback();
+        }, null, null, null, false, true, false);
+        return this;
     }
 
     private function processKeybinds():Void

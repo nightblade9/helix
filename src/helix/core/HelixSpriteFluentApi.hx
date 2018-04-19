@@ -43,6 +43,10 @@ class HelixSpriteFluentApi
         return sprite;
     }
 
+    /**
+    Fires the specified event handler when it's clicked/touched.
+    NOTE: to work on Android, uncomment the line that disables FLX_NO_MOUSE on mobile in Project.xml.
+    */
     public static function onClick(sprite:HelixSprite, callback:Void->Void):HelixSprite
     {
         FlxMouseEventManager.add(sprite, function(me:HelixSprite):Void
